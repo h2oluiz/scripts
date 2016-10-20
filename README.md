@@ -1,1 +1,3 @@
 # scripts
+
+--Permissão 
