@@ -4,7 +4,7 @@
 ---
 DO $$DECLARE r record;
 DECLARE
-    new_owner varchar := 'sgf';
+    new_owner varchar := 'user_new';
 BEGIN
     FOR r IN 
         SELECT 'ALTER TABLE '|| schemaname || '.' || tablename ||' OWNER TO '|| new_owner||';' as a
