@@ -1,0 +1,32 @@
+docker run --name=redmine -it --rm --link=mysql-redmine:mysql --publish=10083:80 --volume=/srv/docker/redmine/redmine:/home/redmine/data   sameersbn/redmine:3.1.0-2
+
+
+docker run --name=redmine -it --rm \
+  --env='DB_TYPE=mysql' \
+  --env='DB_HOST=172.20.0.95' --env='DB_NAME=redmine_hom' \
+  --env='DB_USER=usr_redimine_hom' --env='DB_PASS=teste123' \
+  --volume=/srv/docker/redmine/redmine:/home/redmine/data \
+  --publish=10083:80 \
+  sameersbn/redmine:3.1.0-2
+
+docker run --name=redmine -it --rm \
+  --env='DB_TYPE=mysql' \
+  --env='DB_HOST=172.20.0.95' --env='DB_NAME=redmine_hom' \
+  --env='DB_USER=usr_redimine_hom' --env='DB_PASS=teste123' \
+  --volume=/srv/docker/redmine/redmine:/home/redmine/data \
+  --publish=10083:80 \
+  sameersbn/redmine:3.1.1
+
+docker run --name=redmine -it --rm \
+  --env='DB_TYPE=mysql' \
+  --env='DB_HOST=192.168.1.100' --env='DB_NAME=redmine_production' \
+  --env='DB_USER=redmine' --env='DB_PASS=password' \
+  --volume=/srv/docker/redmine/redmine:/home/redmine/data \
+  --publish=10083:80 \
+  sameersbn/redmine:3.1.1
+
+docker exec -it redmine sudo -u redmine -H bundle exec rake db:migrate RAILS_ENV=production
+docker exec -it redmine sudo -u redmine -H bundle exec rake redmine:plugins:migrate RAILS_ENV=production
+docker exec -it redmine sudo -u redmine -H bundle exec rake tmp:cache:clear tmp:sessions:clear RAILS_ENV=production
+
+rake db:migrate_plugins
