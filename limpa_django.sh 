@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Limpado o cache de RAM 
+sync && echo 3 > /proc/sys/vm/drop_caches
+
+# Limpando swap
+swapoff -a 
+
+# Ativando swap
+swapon -a 
+
+service nginx reload
+
+# Restando o gunicorn
+supervisorctl restart all
+
+# apagar os arquivos /tmp 
+rm /tmp/*
+
+
+
+
