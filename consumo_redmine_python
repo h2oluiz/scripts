@@ -1,0 +1,30 @@
+[GCC 4.9.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from redmine import Redmine
+>>> redmine_url = '172.20.0.250'
+>>> myapi_key = '8460b6cc8c06b87fca28292d0e15db5088a1058d'
+>>> ticket_author = 'adm.adm'
+>>> helpdesk_project_id = 'sr01'
+>>> service = Redmine(redmine_url, key=myapi_key, impersonate=ticket_author)
+>>> newissue = service.issue.create(project_id=helpdesk_project_id, subject='This ticket is created using python redmine', description='This is genius!!!', status_id=1, category_id=1)
+>>> redmine_url = 'http://172.20.0.250'>>> service = Redmine(redmine_url, key=myapi_key, impersonate=ticket_author)>>> newissue = service.issue.create(project_id=helpdesk_project_id, subject='This ticket is created using python redmine', description='This is genius!!!', status_id=1, category_id=1)
+>>> newissue.id
+672
+>>> newissue.uploads = [{'path': '/home/luiz/Downloads/REDE.pdf'}]
+>>> newissue.save()
+True
+>>> newissue2 = service.issue.create(project_id=helpdesk_project_id, subject='This ticket is created using python redmine', description='This is genius number 2!!!', status_id=1, category_id=1, uploads=[{'path': '/home/luiz/Downloads/REDE.pdf'}])
+>>> newissue2.id
+673
+
+
+from redmine import Redmine
+redmine_url = 'http://172.20.0.250'
+myapi_key = '8460b6cc8c06b87fca28292d0e15db5088a1058d'
+ticket_author = 'adm.gleidson'
+helpdesk_project_id = 'sr01'
+service = Redmine(redmine_url, key=myapi_key, impersonate=ticket_author)
+newissue = service.issue.create(project_id=helpdesk_project_id, subject='This ticket is created using python redmine', description='This is genius number 2!!!', status_id=1, category_id=1, uploads=[{'path': '/home/luiz/Downloads/REDE.pdf'}])
+
+newissue = service.issue.create(project_id=helpdesk_project_id, subject='This ticket is created using python redmine', description='This is genius number 2!!!', status_id=1, category_id=1, uploads=[{'path': '/home/luiz/Downloads/REDE.pdf'}])
+
