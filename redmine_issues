@@ -1,0 +1,66 @@
+cd /home/redmine/redmine-3.1.1/ && bundle exec rails runner -e production /home/redmine/cron_redmine/comandos.rb
+
+
+Project.all.each {|p| puts "#{p}:"; p.users_by_role.sort.each {|r| puts "  #{r[0]}:"; r[1].each {|u| puts "    #{u}"}}}
+Project.all.each {|p| puts "#{p}:-"; p.users_by_role.sort.each {|r| puts "  #{r[0]}:="; r[1].each {|u| puts "    #{u}"}}}
+
+
+i.roles = [r_bloqueio]
+
+# Role de Bloqueio
+r_bloqueio = Role.find(15)
+
+# Role Liberacao 
+r_liberado = Role.find(13)
+
+for p in Project.all
+    #puts ('-----------------------')
+    if p.issues.exists?(status: 15)
+        for i in p.issues.all
+            #checar se exitir o status da demanda
+            if i.status.id == 15 and i.tracker_id != 32
+               puts('foi')
+               for m in p.members.all
+                   puts(m)
+                   #se liberado 13
+                   if m.roles.exists?(r_liberado.id)
+                      m.roles = [r_bloqueio]
+                      m.save
+                   end
+               end
+            end
+        end
+    else
+       for m in p.members.all
+           #se bloqueado para 13
+           if m.roles.exists?(r_bloqueio.id)
+               puts(m)
+               m.roles = [r_liberado]
+               m.save
+               puts('Voltou!!!')
+           end
+       end
+    end
+end
+
+
+for g in Group.all
+    puts(g)
+    for p in g.projects.all()
+        puts(p)
+
+        puts('-------------------------')
+        puts(g)
+        puts('-------------------------')
+    end    
+end
+
+
+for m in p.members
+    m.role_ids=[15]
+    m.save
+end
+
+Group.find_by_lastname("Gestor Teste")
+Group.find_by_lastname("Gestor #{ p.name}")
+
