@@ -1,0 +1,79 @@
+# Role de Bloqueio
+r_bloqueio = [15]
+
+# Role Liberacao 
+r_liberado = [13]
+
+for p in Project.all
+    #puts ('-----------------------')
+    if p.issues.exists?(status: 15)
+        for i in p.issues.all
+            #checar se exitir o status da demanda
+            if i.status.id == 15 and i.tracker_id != 32
+               puts('foi')
+               if Group.exists?(lastname: "Gestor #{ p.name}")
+                  g = Group.find_by_lastname("Gestor #{ p.name}")
+                  for m in g.members
+                      m.role_ids = r_bloqueio
+                      m.save
+                  end
+               else
+                  puts ('Grupo não existir - Corrigir Nome!!!')
+               end   
+            end
+        end
+    else
+        if Group.exists?(lastname: "Gestor #{ p.name}")
+            g = Group.find_by_lastname("Gestor #{ p.name}")
+            for m in g.members
+                m.role_ids= r_liberado
+                m.save
+            end
+        else
+            puts ('Grupo não existir - Corrigir Nome!!!')
+        end   
+    end
+end
+
+#---------------------------------------------------------------------------
+
+# Role de Bloqueio
+r_bloqueio = [15]
+
+# Role Liberacao 
+r_liberado = [13]
+
+grupo = Group.where("lastname like ?",'Gestor%')
+
+for p in Project.all
+    puts ('-----------------------')
+    if p.issues.exists?(status: 15)
+        for i in p.issues.all
+            #checar se exitir o status da demanda
+            if i.status.id == 15 and i.tracker_id != 32
+               puts('foi')
+               for g in grupo
+                  if g.projects.exists?(p.id)
+                     puts('foi-1')
+                     for m in [g.members.find_by_project_id(p.id)]
+                        puts("entrou")
+                        m.role_ids = r_bloqueio
+                        m.save
+                     end
+                  end
+               end
+            end
+        end
+    else
+        for g in grupo
+           if g.projects.exists?(p.id)
+              puts('foi-2')
+              for m in [g.members.find_by_project_id(p.id)]
+                  puts("Nao")
+                  m.role_ids = r_liberado
+                  m.save
+              end
+           end
+        end
+    end
+end
